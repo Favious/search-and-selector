@@ -6,13 +6,36 @@ import ITunesElementType from "../types/iTunesElement.type";
 
 const MainComponent = () => {
   let searchTerms = "";
+  const [requestName, setRequestName] = useState("");
   const [entitySelection, setEntitySelection] = useState("all");
+
+  const updateSearchTerms = () => {
+    searchTerms = requestName.toLowerCase().replace(" ", "+");
+    if (entitySelection !== "all") {
+      searchTerms += "&entity=" + entitySelection;
+    }
+  };
+
+  const sendSearchTerms = () => {
+    updateSearchTerms();
+    ITunesElementService.getAll(searchTerms)
+      .then((response) => {
+        setITunesElements(response.data.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="container p-3">
       <div className="row">
         <div className="col-8">
-          <Form.Control type="text" id="inputRequestTerms" />
+          <Form.Control
+            type="text"
+            id="inputRequestTerms"
+            onChange={(event) => setRequestName(event.target.value)}
+          />
         </div>
         <div className="col-2">
           <Dropdown>
@@ -58,7 +81,11 @@ const MainComponent = () => {
           </Dropdown>
         </div>
         <div className="col-2">
-          <Button className="col-12" variant="primary">
+          <Button
+            className="col-12"
+            variant="primary"
+            onClick={sendSearchTerms}
+          >
             Search
           </Button>
         </div>

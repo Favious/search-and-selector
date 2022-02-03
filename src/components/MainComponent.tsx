@@ -1,10 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Dropdown, Form, Button } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ITunesElementService from "../services/iTunesElement.service";
 import ITunesElementType from "../types/iTunesElement.type";
 import ListedDataComponent from "./ListedDataComponent";
 import Pagination from "./PaginationComponent";
+import OrderingComponent from "./OrderingComponent";
 
 const MainComponent = () => {
   let searchTerms = "";
@@ -39,13 +40,17 @@ const MainComponent = () => {
 
   const indexOfLastElement = currentPage * elementsPerPage;
   const indexOfFirstElement = indexOfLastElement - elementsPerPage;
-  const currentElements = iTunesElements.slice(
+  let currentElements = iTunesElements.slice(
     indexOfFirstElement,
     indexOfLastElement
   );
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+  };
+
+  const order = (customElements: any) => {
+    setITunesElements(customElements);
   };
 
   return (
@@ -111,6 +116,7 @@ const MainComponent = () => {
           </Button>
         </div>
       </div>
+      <OrderingComponent currentELements={iTunesElements} order={order} />
       <ListedDataComponent iTunesElements={currentElements} />
       <Pagination
         elementsPerPage={elementsPerPage}

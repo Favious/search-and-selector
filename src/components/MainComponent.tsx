@@ -3,9 +3,11 @@ import { Dropdown, Form, Button } from "react-bootstrap";
 import { useState } from "react";
 import ITunesElementService from "../services/iTunesElement.service";
 import ITunesElementType from "../types/iTunesElement.type";
+import ListedDataComponent from "./ListedDataComponent";
 
 const MainComponent = () => {
   let searchTerms = "";
+  const [iTunesElements, setITunesElements] = useState([]);
   const [requestName, setRequestName] = useState("");
   const [entitySelection, setEntitySelection] = useState("all");
 
@@ -19,7 +21,9 @@ const MainComponent = () => {
   const sendSearchTerms = () => {
     updateSearchTerms();
     ITunesElementService.getAll(searchTerms)
-      .then((response) => {})
+      .then((response) => {
+        setITunesElements(response.data.results);
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -88,6 +92,7 @@ const MainComponent = () => {
           </Button>
         </div>
       </div>
+      <ListedDataComponent iTunesElements={iTunesElements} />
     </div>
   );
 };

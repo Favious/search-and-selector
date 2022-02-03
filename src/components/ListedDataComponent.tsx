@@ -16,21 +16,21 @@ const ListedDataComponent = (props: Props) => {
                 <div>
                   <img
                     src={element.artworkUrl100}
-                    width="200px"
-                    height="200px"
+                    width="100px"
+                    height="100px"
                   />
                 </div>
               </div>
               <div className="col-8">
                 <div className="row">
-                  <h3>{element.collectionCensoredName || element.trackName}</h3>
+                  <h5>{element.collectionCensoredName || element.trackName}</h5>
                 </div>
                 <div>
                   <h6>{element.artistName}</h6>
                 </div>
                 {element.collectionPrice && (
                   <div>
-                    <h4 className="text-danger">{element.collectionPrice} $</h4>
+                    <h5 className="text-danger">{element.collectionPrice} $</h5>
                   </div>
                 )}
               </div>

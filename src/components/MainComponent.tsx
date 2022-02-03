@@ -19,9 +19,7 @@ const MainComponent = () => {
   const sendSearchTerms = () => {
     updateSearchTerms();
     ITunesElementService.getAll(searchTerms)
-      .then((response) => {
-        setITunesElements(response.data.results);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log(error);
       });

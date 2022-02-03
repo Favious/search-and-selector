@@ -10,6 +10,8 @@ const MainComponent = () => {
   const [iTunesElements, setITunesElements] = useState([]);
   const [requestName, setRequestName] = useState("");
   const [entitySelection, setEntitySelection] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [elementsPerPage, setElementsPerPage] = useState(5);
 
   const updateSearchTerms = () => {
     searchTerms = requestName.toLowerCase().replace(" ", "+");
@@ -28,6 +30,13 @@ const MainComponent = () => {
         console.log(error);
       });
   };
+
+  const indexOfLastElement = currentPage * elementsPerPage;
+  const indexOfFirstElement = indexOfLastElement - elementsPerPage;
+  const currentElements = iTunesElements.slice(
+    indexOfFirstElement,
+    indexOfLastElement
+  );
 
   return (
     <div className="container p-3">
@@ -92,7 +101,7 @@ const MainComponent = () => {
           </Button>
         </div>
       </div>
-      <ListedDataComponent iTunesElements={iTunesElements} />
+      <ListedDataComponent iTunesElements={currentElements} />
     </div>
   );
 };

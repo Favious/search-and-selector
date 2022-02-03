@@ -4,12 +4,20 @@ import { useState } from "react";
 import ITunesElementService from "../services/iTunesElement.service";
 import ITunesElementType from "../types/iTunesElement.type";
 import ListedDataComponent from "./ListedDataComponent";
+import Pagination from "./PaginationComponent";
 
 const MainComponent = () => {
   let searchTerms = "";
+  const numberOfElementsPerPage: number = 5;
+  const defaultEntityValue: string = "all";
+
   const [iTunesElements, setITunesElements] = useState([]);
   const [requestName, setRequestName] = useState("");
-  const [entitySelection, setEntitySelection] = useState("all");
+  const [entitySelection, setEntitySelection] = useState(defaultEntityValue);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [elementsPerPage, setElementsPerPage] = useState(
+    numberOfElementsPerPage
+  );
 
   const updateSearchTerms = () => {
     searchTerms = requestName.toLowerCase().replace(" ", "+");
@@ -18,15 +26,26 @@ const MainComponent = () => {
     }
   };
 
-  const sendSearchTerms = () => {
+  const sendSearchTerms = async () => {
     updateSearchTerms();
-    ITunesElementService.getAll(searchTerms)
+    await ITunesElementService.getAll(searchTerms)
       .then((response) => {
         setITunesElements(response.data.results);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const indexOfLastElement = currentPage * elementsPerPage;
+  const indexOfFirstElement = indexOfLastElement - elementsPerPage;
+  const currentElements = iTunesElements.slice(
+    indexOfFirstElement,
+    indexOfLastElement
+  );
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -92,7 +111,12 @@ const MainComponent = () => {
           </Button>
         </div>
       </div>
-      <ListedDataComponent iTunesElements={iTunesElements} />
+      <ListedDataComponent iTunesElements={currentElements} />
+      <Pagination
+        elementsPerPage={elementsPerPage}
+        totalElements={iTunesElements.length}
+        paginate={paginate}
+      />
     </div>
   );
 };

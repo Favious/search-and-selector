@@ -5,6 +5,7 @@ import ITunesElementService from "../services/iTunesElement.service";
 import ITunesElementType from "../types/iTunesElement.type";
 import ListedDataComponent from "./ListedDataComponent";
 import Pagination from "./PaginationComponent";
+import OrderingComponent from "./OrderingComponent";
 
 const MainComponent = () => {
   let searchTerms = "";
@@ -111,6 +112,7 @@ const MainComponent = () => {
           </Button>
         </div>
       </div>
+      <OrderingComponent currentELements={currentElements} order={() => {}} />
       <ListedDataComponent iTunesElements={currentElements} />
       <Pagination
         elementsPerPage={elementsPerPage}

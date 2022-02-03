@@ -18,9 +18,9 @@ const MainComponent = () => {
     }
   };
 
-  const sendSearchTerms = () => {
+  const sendSearchTerms = async () => {
     updateSearchTerms();
-    ITunesElementService.getAll(searchTerms)
+    await ITunesElementService.getAll(searchTerms)
       .then((response) => {
         setITunesElements(response.data.results);
       })
